@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Sales representative</title>
+    <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+            integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+            crossorigin="anonymous"
+    />
+    <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+            integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+            crossorigin="anonymous"
+    />
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+<body>
+<div class="container">
+    <h3 class="text-center mt-5 mb-3">Edit sales representative</h3>
+    <div class="row justify-content-center align-items-center h-100">
+        <div class="col col-md-6">
+            <form
+                    action="#"
+                    th:action="@{/saveUser}"
+                    th:object="${user}"
+                    method="post"
+            >
+                <div class="form-group">
+                    <label for="id">User ID</label>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="id"
+                            th:field="*{id}"
+                            readonly
+                            placeholder="Enter product name"
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="name">Full name</label>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="name"
+                            th:field="*{fullName}"
+                            placeholder="Enter full name"
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="username"
+                            th:field="*{username}"
+                            placeholder="Enter username"
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="password"
+                            th:field="*{password}"
+                            readonly
+                            placeholder="Enter made in"
+                    />
+                </div>
+                <button class="btn btn-outline-info" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

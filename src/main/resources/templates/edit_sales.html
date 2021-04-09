@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Sale</title>
+    <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+            integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+            crossorigin="anonymous"
+    />
+    <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+            integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+            crossorigin="anonymous"
+    />
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+<body>
+<div class="container">
+    <h3 class="text-center mt-5 mb-3">Edit sale</h3>
+    <div class="row justify-content-center align-items-center h-100">
+        <div class="col col-md-6">
+            <form
+                    action="#"
+                    th:action="@{/saveSales}"
+                    th:object="${sales}"
+                    method="post"
+            >
+                <div class="form-group">
+                    <label for="id">Sale ID</label>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="id"
+                            th:field="*{id}"
+                            readonly
+                            placeholder="Enter product name"
+                    />
+                </div>
+                <div class="form-group">
+                    <select class="form-control" id="productID" name="productID">
+                        <option value="">Select product id</option>
+                        <option th:each="product : ${listProducts}" th:value="${product.id}" th:text="${product.id}+', '+${product.name}+' , '+${product.price}" th:field="*{productID}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" id="customerID" name="customerID">
+                        <option value="">Select customer id</option>
+                        <option th:each="customer: ${listCertainCustomers}" th:value="${customer.id}" th:text="${customer.id}+', '+${customer.fullName}" th:field="*{customerID}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="data">Date</label>
+                    <input type="datetime-local"  id="data" th:field="*{data}"  onchange="console.log(this.value.split('T')[0]);" >
+                </div>
+                <button class="btn btn-outline-info" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

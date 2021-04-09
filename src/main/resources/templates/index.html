@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Business application</title>
+    </head>
+    <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+            integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+            crossorigin="anonymous"
+    />
+    <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+            integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+            crossorigin="anonymous"
+    />
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+<body>
+
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+    <div class="container align-items-center">
+        <h5 class="navbar-brand" th:inline="text">Welcome [[${#httpServletRequest.remoteUser}]]</h5>
+        <ul class="navbar-nav pull-right">
+            <li class="nav-item">
+                <form th:action="@{/logout}" method="POST">
+                    <input type="submit" value="Logout" class="btn btn-info btn-sm">
+                </form>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div sec:authorize="hasAnyAuthority('admin')" class="container align-items-center">
+
+    <h2 class="text-center mt-5 mb-3">Sales Representatives</h2>
+    <a href="newUser" class="btn btn-primary float-right mb-2">
+        <i class="fas fa-plus mr-1"></i> ADD Sales representative</a
+    >
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Full name</th>
+            <th>Username</th>
+            <th sec:authorize="hasAnyAuthority('admin')">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${listUsers}">
+            <td th:text="${user.id}">Full name</td>
+            <td th:text="${user.fullName}">Full name</td>
+            <td th:text="${user.username}">Username</td>
+
+            <td>
+                <div>
+                    <a sec:authorize="hasAnyAuthority('admin')" th:href="@{'/editUser/' + ${user.id}}"><i class="fas fa-edit mr-2"></i></a>
+                    <a sec:authorize="hasAnyAuthority('admin')" th:href="@{'/deleteUser/' + ${user.id}}"><i class="far fa-trash-alt" style="color: red;"></i></a>
+            </div>
+        </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="container align-items-center">
+
+    <h3 class="text-center mt-5 mb-3">Products</h3>
+    <a sec:authorize="hasAnyAuthority('admin')" href="newProduct" class="btn btn-primary float-right mb-2">
+        <i class="fas fa-plus mr-1"></i> ADD Product</a
+    >
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Product ID</th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Made In</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${listProducts}">
+            <td th:text="${product.id}">Product ID</td>
+            <td th:text="${product.name}">Name</td>
+            <td th:text="${product.brand}">Brand</td>
+            <td th:text="${product.madein}">Made in</td>
+            <td th:text="${product.price}">Price</td>
+            <td sec:authorize="hasAnyAuthority('admin')">
+            <td>
+                <div>
+                    <a sec:authorize="hasAnyAuthority('admin')" th:href="@{'/editProduct/' + ${product.id}}"><i class="fas fa-edit mr-2"></i></a>
+                    <a sec:authorize="hasAnyAuthority('admin')" th:href="@{'/deleteProduct/' + ${product.id}}"><i class="far fa-trash-alt" style="color: red;"></i></a></div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div sec:authorize="hasAnyAuthority('admin')" class="container align-items-center">
+
+    <h3 class="text-center mt-5 mb-3">Customers</h3>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Customer ID</th>
+            <th>Name</th>
+            <th>Sales representative name</th>
+            <th>Age</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="customer: ${listCustomers}">
+            <td th:text="${customer.id}">Customer ID</td>
+            <td th:text="${customer.fullName}">Name</td>
+            <td th:text="${customer.salesRepresentativeName}">Sales representative username</td>
+            <td th:text="${customer.age}">Age</td>
+            <td>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div sec:authorize="hasAnyAuthority('sales representative')" class="container align-items-center">
+
+    <h3 class="text-center mt-5 mb-3"> My customers</h3>
+    <a href="/newCustomer" class="btn btn-primary float-right mb-2">
+        <i class="fas fa-plus mr-1"></i> ADD Customer</a
+    >
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Customer ID</th>
+            <th>Name</th>
+            <th>Age</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="customer: ${listCertainCustomers}">
+            <td th:text="${customer.id}">Customer ID</td>
+            <td th:text="${customer.fullName}">Name</td>
+            <td th:text="${customer.age}">Age</td>
+            <td>
+                <div>
+                    <a  th:href="@{'/editCustomer/' + ${customer.id}}"><i class="fas fa-edit mr-2"></i></a>
+                    <a  th:href="@{'/deleteCustomer/' + ${customer.id}}"><i class="far fa-trash-alt" style="color: red;"></i></a></div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div sec:authorize="hasAnyAuthority('admin')" class="container align-items-center">
+
+    <h3 class="text-center mt-5 mb-3">Sales</h3>
+        <i class="fa fa-database" aria-hidden="true"></i> Аnalysis by sales representative</a
+    >
+    <form  method="get">
+        <select class="form-control" id="txtSearch" type="text" name="keyword">
+            <option value="">Select sales representative username</option>
+            <option th:each="user: ${listUsers}" th:value="${user.username}" th:text="${user.username}" ></option>
+        </select>
+        <button type="submit">Go</button>
+        <br>
+        <br>
+    </form>
+    <!--<form method="get">
+        <input id="txtSearch" type="text" name="keyword">
+        <button type="submit">Go</button>
+        <br>
+        <br>
+        <i class="fa fa-database" aria-hidden="true"></i> Аnalysis by data</a
+            >
+    </form>
+        <form  method="get">
+            <i class="fa fa-database" aria-hidden="true"></i> Аnalysis by data</a
+            <input id="dateStart" type="date" name="dateStart"  >
+            <input id="dateEnd" type="date" name="dateEnd" >
+            <button type="submit">Go</button>
+        </form>-->
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Sales ID</th>
+            <th>Data</th>
+            <th>Sales representative name</th>
+            <th>Product ID</th>
+            <th>Customer ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="sales: ${sales}">
+            <td th:text="${sales.id}">Sales ID</td>
+            <td th:text="${sales.data}">Data</td>
+            <td th:text="${sales.salesRepresentativeName}">Sales representative name</td>
+            <td th:text="${sales.productID}">Product ID</td>
+            <td th:text="${sales.customerID}">Customer ID</td>
+            <td>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div sec:authorize="hasAnyAuthority('sales representative')" class="container align-items-center">
+
+    <h3 class="text-center mt-5 mb-3"> My sales</h3>
+    <a href="/newSales" class="btn btn-primary float-right mb-2">
+        <i class="fas fa-plus mr-1"></i> ADD sale</a
+    >
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Sales ID</th>
+            <th>Data</th>
+            <th>Product ID</th>
+            <th>Customer ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="sales: ${listCertainSales}">
+            <td th:text="${sales.id}">Sales ID</td>
+            <td th:text="${sales.data}">Data</td>
+            <td th:text="${sales.productID}">Product ID</td>
+            <td th:text="${sales.customerID}">Customer ID</td>
+            <td>
+                <div>
+                    <a  th:href="@{'/editSales/' + ${sales.id}}"><i class="fas fa-edit mr-2"></i></a>
+                    <a  th:href="@{'/deleteSales/' + ${sales.id}}"><i class="far fa-trash-alt" style="color: red;"></i></a></div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
